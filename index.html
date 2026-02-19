@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фильтрация цветных блоков</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-filter"></i> Фильтрация цветных блоков</h1>
+            <p class="subtitle">Нажмите на кнопку фильтра, чтобы отобразить блоки определенного цвета</p>
+        </header>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Все</button>
+            <button class="filter-btn" data-filter="red">Красные</button>
+            <button class="filter-btn" data-filter="blue">Синие</button>
+            <button class="filter-btn" data-filter="green">Зеленые</button>
+            <button class="filter-btn" data-filter="yellow">Желтые</button>
+            <button class="filter-btn" data-filter="purple">Фиолетовые</button>
+        </div>
+
+        <div class="blocks-container">
+            <!-- Блоки будут добавлены через JavaScript -->
+        </div>
+
+        <div class="info">
+            <h3><i class="fas fa-info-circle"></i> Как это работает</h3>
+            <p>При нажатии на кнопку фильтра отображаются только блоки выбранного цвета. Кнопка "Все" показывает все блоки.</p>
+            <p>Каждый блок имеет категорию (цвет) и номер, которые отображаются внутри блока.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
