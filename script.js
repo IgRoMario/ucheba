@@ -1,125 +1,111 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Массив данных для блоков
-    const blocksData = [
-        { id: 1, category: 'red', number: 1 },
-        { id: 2, category: 'blue', number: 2 },
-        { id: 3, category: 'green', number: 3 },
-        { id: 4, category: 'yellow', number: 4 },
-        { id: 5, category: 'purple', number: 5 },
-        { id: 6, category: 'red', number: 6 },
-        { id: 7, category: 'blue', number: 7 },
-        { id: 8, category: 'green', number: 8 },
-        { id: 9, category: 'yellow', number: 9 },
-        { id: 10, category: 'purple', number: 10 },
-        { id: 11, category: 'red', number: 11 },
-        { id: 12, category: 'blue', number: 12 }
-    ];
+// ========== КРИТИЧЕСКИ ПЛОХОЙ JS ==========
+// Здесь полно ошибок, но сайт "вроде работает"
 
-    // Контейнер для блоков
-    const blocksContainer = document.querySelector('.blocks-container');
+let cart = [];
+let cartVisible = false;
+
+// Функция добавления в корзину
+function addToCart(name, price) {
+    // Проблема 3: Добавляется всегда один и тот же товар с багом
+    let item = {
+        name: name,
+        price: price,
+        quantity: 1
+    };
     
-    // Кнопки фильтров
-    const filterButtons = document.querySelectorAll('.filter-btn');
+    // ОШИБКА: Не проверяем, есть ли уже такой товар в корзине
+    cart.push(item);
     
-    // Функция для отображения всех блоков
-    function displayBlocks(blocks) {
-        blocksContainer.innerHTML = '';
-        
-        blocks.forEach(block => {
-            const blockElement = document.createElement('div');
-            blockElement.className = `block ${block.category}`;
-            blockElement.dataset.category = block.category;
-            
-            // Русские названия для категорий
-            const categoryNames = {
-                red: 'Красный',
-                blue: 'Синий',
-                green: 'Зеленый',
-                yellow: 'Желтый',
-                purple: 'Фиолетовый'
-            };
-            
-            blockElement.innerHTML = `
-                <div class="block-number">${block.number}</div>
-                <div class="block-category">${categoryNames[block.category]}</div>
-            `;
-            
-            blocksContainer.appendChild(blockElement);
-        });
+    // Проблема 4: Счетчик обновляется, но показывает общее количество позиций, а не сумму quantity
+    document.getElementById('cart-count').textContent = cart.length;
+    
+    // Проблема 5: Попытка показать корзину, но она скрыта из-за условия
+    if (!cartVisible) {
+        document.getElementById('cartDetails').style.display = 'block';
+        cartVisible = true;
     }
     
-    // Инициализация - отображение всех блоков
-    displayBlocks(blocksData);
-    // Обработчики событий для кнопок фильтрации
-    filterButtons.forEach(button => {
-        
-        button.addEventListener('click', function() {
-            // Удаляем активный класс со всех кнопок
-            filterButtons.forEach(btn => btn.className = 'filter-btn');
-
-         if (this.getAttribute('data-filter') == 'red'){
-                this.classList.add('activer');
-            } 
-
-            if (this.getAttribute('data-filter') == 'blue'){
-                this.classList.add('activeb');
-            } 
-
-            if (this.getAttribute('data-filter') == 'green'){
-                this.classList.add('activeg');
-            } 
-
-            if (this.getAttribute('data-filter') == 'yellow'){
-                this.classList.add('activey');
-            } 
-
-             if (this.getAttribute('data-filter') == 'purple'){
-                this.classList.add('activep');
-            } 
-
-            if (this.getAttribute('data-filter') == 'all'){
-                this.classList.add('active');
-            }
-
-            
-            // Получаем фильтр из data-атрибута
-            const filter = this.dataset.filter;
-            
-            // Фильтруем блоки
-            let filteredBlocks;
-            if (filter === 'all') {
-                filteredBlocks = blocksData;
-            } else {
-                filteredBlocks = blocksData.filter(block => block.category === filter);
-            }
-            
-            // Отображаем отфильтрованные блоки
-            displayBlocks(filteredBlocks);
-        });
-    });
+    // ОШИБКА: Не обновляем список товаров в корзине сразу
+    // alert("Товар добавлен!"); // Даже этого нет
     
-   // Добавляем небольшую анимацию при загрузке страницы
-    setTimeout(() => {
-        document.querySelectorAll('.block').forEach((block, index) => {
-            setTimeout(() => {
-                block.style.opacity = '0';
-                block.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    block.style.transition = 'opacity 1s ease, transform 1s ease';
-                    block.style.opacity = '1';
-                    block.style.transform = 'translateY(0)';
-                }, 100);
-            }, index * 50);
-        });
-    }, 300);
-});
+    // Пытаемся обновить отображение (но функция с ошибкой)
+    updateCartDisplay();
+}
 
+function updateCartDisplay() {
+    let cartList = document.getElementById('cartItems');
+    let totalSpan = document.getElementById('cartTotal');
+    
+    if (!cartList || !totalSpan) return;
+    
+    cartList.innerHTML = ''; // Очищаем
+    
+    // Проблема 6: Если корзина пуста, но блок виден
+    if (cart.length === 0) {
+        cartList.innerHTML = '<li>Корзина пуста</li>';
+        totalSpan.textContent = '0';
+        return;
+    }
+    
+    let total = 0;
+    for (let i = 0; i <= cart.length; i++) { // ОШИБКА: Индекс выходит за границы (i <= length)
+        let item = cart[i];
+        // Здесь будет ошибка, когда i станет равно cart.length (undefined)
+        let li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.price} руб. x ${item.quantity}`;
+        cartList.appendChild(li);
+        total += item.price * item.quantity;
+    }
+    
+    totalSpan.textContent = total;
+}
 
+// Калькулятор скидки
+function calculateDiscount() {
+    let input = document.getElementById('orderAmount');
+    let resultP = document.getElementById('discountResult');
+    
+    // Проблема 7: Поле ввода текстовое, а не число
+    let amount = input.value;
+    
+    // Проблема 8: Сравниваем строку с числом и используем неправильную логику
+    if (amount > 5000) { // Строка '10000' > 5000? В JS да, но это неявное приведение
+        resultP.textContent = 'Скидка: 15%';
+    } else if (amount = 2000) { // ОШИБКА: Присваивание вместо сравнения!
+        resultP.textContent = 'Скидка: 10%';
+    } else if (amount > 1000) {
+        resultP.textContent = 'Скидка: 5%';
+    } else {
+        resultP.textContent = 'Скидка: 0%';
+    }
+    
+    // Проблема 9: Не учитываем, что пользователь может ввести "две тысячи"
+}
 
+// Подписка на новости
+function subscribe() {
+    let emailInput = document.getElementById('emailInput');
+    let messageP = document.getElementById('subscribeMessage');
+    let email = emailInput.value;
+    
+    // Проблема 10: Очень слабая валидация
+    if (email.length > 0) {
+        // Проверка на "@" вообще никакая
+        messageP.textContent = 'Спасибо за подписку!';
+        messageP.style.color = 'green';
+        
+        // Проблема 11: Инпут не очищается, можно натыкать миллион подписок
+        // emailInput.value = ''; // Забыли очистить
+        
+        // Проблема 12: Нет проверки на дубликаты (но это уже сложнее)
+    } else {
+        messageP.textContent = 'Ошибка в email';
+        messageP.style.color = 'red';
+    }
+}
 
+// Проблема 13: Uncaught TypeError при попытке добавить товар, 
+// когда корзина пуста (из-за цикла в updateCartDisplay)
 
- 
-
-
-
+// Проблема 14: Кнопка "Рассчитать скидку" ломается при вводе букв
+// Потому что amount > 5000 сработает для букв? Нет, буквы вернут NaN
