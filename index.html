@@ -3,37 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Фильтрация цветных блоков</title>
+    <title>Уютный дом</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-filter"></i> Фильтрация цветных блоков</h1>
-            <p class="subtitle">Нажмите на кнопку фильтра, чтобы отобразить блоки определенного цвета</p>
-        </header>
 
-        <div class="filters">
-            <button class="filter-btn active" data-filter="all">Все</button>
-            <button class="filter-btn" data-filter="red">Красные</button>
-            <button class="filter-btn" data-filter="blue">Синие</button>
-            <button class="filter-btn" data-filter="green">Зеленые</button>
-            <button class="filter-btn" data-filter="yellow">Желтые</button>
-            <button class="filter-btn" data-filter="purple">Фиолетовые</button>
+<div class="header">
+    <h1>🏠 Уютный дом</h1>
+    <div class="cart-summary">
+        Корзина: <span id="cart-count">0</span> товаров
+    </div>
+</div>
+
+<div class="container">
+    <h2>Наши товары</h2>
+    <div class="products">
+        <div class="product-card">
+            <h3>Свеча</h3>
+            <p>Цена: 500 руб.</p>
+            <button onclick="addToCart('Свеча', 500)">
+                Добавить <span class="helper">в корзину</span>
+            </button>
         </div>
-
-        <div class="blocks-container">
-            <!-- Блоки будут добавлены через JavaScript -->
+        <div class="product-card">
+            <h3>Плед</h3>
+            <p>Цена: 1500 руб.</p>
+            <button onclick="addToCart('Плед', 1500)">Добавить</button>
         </div>
-
-        <div class="info">
-            <h3><i class="fas fa-info-circle"></i> Как это работает</h3>
-            <p>При нажатии на кнопку фильтра отображаются только блоки выбранного цвета. Кнопка "Все" показывает все блоки.</p>
-            <p>Каждый блок имеет категорию (цвет) и номер, которые отображаются внутри блока.</p>
+        <div class="product-card">
+            <h3>Кружка</h3>
+            <p>Цена: 300 руб.</p>
+            <button onclick="addToCart('Кружка', 300)">Добавить</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="discount-calculator">
+        <h3>🧮 Калькулятор скидки</h3>
+        <p>Введите сумму заказа:</p>
+        <input type="text" id="orderAmount" placeholder="Например, 2000">
+        <button onclick="calculateDiscount()">Рассчитать скидку</button>
+        <p id="discountResult">Скидка: 0%</p>
+    </div>
+
+    <div class="form-group">
+        <h3>📧 Подпишитесь на новости</h3>
+        <input type="email" id="emailInput" placeholder="Ваш email">
+        <button onclick="subscribe()">Подписаться</button>
+        <p id="subscribeMessage"></p>
+    </div>
+
+    <div class="cart" id="cartDetails" style="display: none;">
+        <h3>Ваша корзина</h3>
+        <ul id="cartItems"></ul>
+        <p>Итого: <span id="cartTotal">0</span> руб.</p>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
